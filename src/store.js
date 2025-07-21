@@ -4,14 +4,9 @@ export const initialStore=()=>{
     todos: [
       {
         id: 1,
-        title: "Make the bed",
+        title: "",
         background: null,
-      },
-      {
-        id: 2,
-        title: "Do my homework",
-        background: null,
-      }
+      },      
     ]
   }
 }
