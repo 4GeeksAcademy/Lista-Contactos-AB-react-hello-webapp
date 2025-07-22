@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 
 export const Navbar = () => {
@@ -6,8 +7,8 @@ export const Navbar = () => {
 		<nav className="navbar navbar-light bg-light">
 			<div className="container">
 				<div className="ml-auto">
-					{/* <Link to="/demo">
-						<button className="btn btn-primary">Check the Context in action</button>
+					{/* <Link to="/add">
+						<div className="btn btn-primary">Comenzar</div>
 					</Link> */}
 				</div>
 			</div>

@@ -9,34 +9,35 @@ export const Demo = () => {
   return (
     <div className="container">
       <div className="d-flex justify-content-end mb-4">
-        <Link to="/">
+        <Link to="/add">
           <button className="btn btn-success">Add new contact</button>
         </Link>
       </div>
 
-      <div className="row">
-        {store && store.todos?.map((item) => ( //verifica si store existe, si existe ejecuta .map por cada item retornar el bloque jsx que rendirza una tarjeta con sus datos. 
-            // Tarjeta por contacto
-          <div className="col-md-4 mb4" key={item.id}>
-            <div className="card shadow-sm h-100">
-              <div className="card-body" style={{ background: item.background || "#f8f9fa" }}
-              >                           
-                                          
-              <h5 className="card-title">{item.title}</h5> {/* //titulo del item */}
-              <p className="card-text">           
-                <Link to= {`/single/${item.id}`}>Vied details</Link> {/* Link hacia vista especifica del contacto */}
-              </p>  
-                            <p className="card-text small text-muted">   
-                Open file <code>./store.js</code> to see the global store. {/* mensaje informativo */}  
-              </p>
+      <div className="container pt-4">
+        <div className="row justify-content-center">
+          {store.todos?.map((p, index) => (
+            <div className="col-md-6 mb-4" key={index}>
+              <div className="card border-0 shadow rounded" style={{ backgroundColor: p.background || "#ffffff" }}>
+                <div className="card-body">
+                  <h4 className="card-title text-left mb-3"><strong>FullName</strong> {p.FullName}</h4>
+                  <ul className="list-unstyled mb-4">
+                    <li><strong>Email:</strong> {p.Email}</li>
+                    <li><strong>Phone:</strong> {p.Phone}</li>
+                    <li><strong>Address:</strong> {p.Address}</li>
+                  </ul>
+                  <div className="d-grid">
+                    <Link to={`/edit/${p.id}`}>
+                      <button className="btn btn-outline-primary">Edit Character</button>
+                    </Link>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-
-
-        ))}
-
+          ))}
+        </div>
       </div>
+
 
 
     </div>

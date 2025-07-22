@@ -1,0 +1,104 @@
+
+import { useState } from "react"
+import { Link } from "react-router-dom";
+
+
+export const AddEditCharacter = () => {
+
+    const [newContact, setNewContact] = useState({
+		FullName: "", 
+		Email: "",
+		Phone: "", 
+		Address: ""
+
+	})
+	const [showAlert, setShowAlert] = useState(false); //muestro alerta
+
+	const handleInputsChange = (e) => {  
+		setNewContact({...newContact, [e.target.name]: e.target.value})  //manejo el evento y actualizo el estado 
+	}																	//cambiar solo el campo del input que se esta modificando por un nuevo (name vs value)	
+
+	const handleSubmit = (e) => {
+		e.preventDefault();  //click(e) y preventdefault para no ejecutar la accion normal que es recargar o dirigir
+
+		if (!newContact.FullName || !newContact.Email || !newContact.Phone || !newContact.Address) { // Si alguno de estos campos (newContact.propiedad) esta vacio ! o faltan ||
+			setShowAlert(true);																		//Alerta: "Por favor completa todos los campos"
+			setTimeout(() => setShowAlert(false), 2000);		//Temporizador de 2 sgs. para ejecutar alerta
+			return;
+		}
+		crearContacto(newContact, setNewContact, dispatch) //creo el contacto, limpio el formulario y actualizo el UseGlobalState
+
+	}
+
+    return (
+        <div className="container pt-4">
+			{/* <h2 className="text-center text-light"><img style={{ height: "40px"}} src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=400&q=80" alt="Icono de contacto"></img></h2> */}
+			
+			{showAlert && (
+				<div className="alert alert-warning" role="alert">
+					Por favor completa todos los campos	
+				</div>
+			)}
+           <div className="row justify-content-center">
+				<div className="col-md-11">
+					<h1 className="text-center my-4 fw-bold">Add a new contact</h1>
+					<form className="mb-5" onSubmit={handleSubmit}>
+					{/* Full Name */}
+					<div className="mb-3">
+						<label htmlFor="formGroupExampleInput" className="form-label">Full Name</label>
+						<input type="text" className="form-control" id="fullNameInput" placeholder="Full Name" name="FullName" value={newContact.FullName} onChange={handleInputsChange} />
+					</div>
+					{/* Email */}
+					<div className="mb-3">
+						<label htmlFor="formGroupExampleInput2" className="form-label">Email</label>
+						<input type="text" className="form-control" id="EmailInputformGroupExampleInput2" placeholder="Email" name="Email" value={newContact.Email} onChange={handleInputsChange} />
+					</div>
+					{/* Phone */}
+					<div className="mb-3">
+						<label htmlFor="formGroupExampleInput2" className="form-label">Phone</label>
+						<input type="text" className="form-control" id="PhoneInput" placeholder="Phone" name="Phone" value={newContact.Phone} onChange={handleInputsChange} />
+					</div>
+					{/* Address */}
+					<div className="mb-3">
+						<label htmlFor="formGroupExampleInput2" className="form-label">Address</label>
+						<input type="text" className="form-control" id="AddressInput" placeholder="Address" name="Address" value={newContact.Address} onChange={handleInputsChange} />
+					</div>
+					{/* Boton de Save y el link de devolver */}
+					<div>
+						<button className="btn btn-primary w-100">Save</button>
+					</div>
+					</form>
+					<div className="mt-3">
+						<Link to="/demo">or get back to contacts</Link>
+					</div>
+				</div>
+			</div>
+        </div>
+
+    )
+}
+export default AddEditCharacter;
+// Hay que escribir un h2 (min: 7:05) que tendra 
+//A cada input se le debe agregar el value y el onchange
+
+
+
+
+
+
+
+
+
+
+// separamos las vistas con las siguientes instrucciones: 
+//Traer de home, el formulario
+// traer los elementos del fomulario a AddEditCharacter (para editar los contactos.)
+// usar elemento "params" con el hook useParams: me devolvera un objeto con parametros dinamicos de la url actual. (key (id) valor: 2)
+        // destructurar: reemplazar el valor de la variable (params) por el id. 
+// llamar useEffect en addcharacter con sus dependencias. 
+    //si tiene el id edito si no lo estoy agregando. 
+    // steNew Personaje(store.personajes.filter(personaje => personaje.id == id)[0]) **el filter recorre y devuelve un nuevo arreglo. 
+// como acceder al store desde addeditcharacter: const {store, dispatch} = useGlobaReduce ()    
+
+//crear estado: isEditing, setIsEditingUseState
+// debo tener una funcion const navigate = useNavigate que mne servira para cuando haga click me diriga a una pagina que yo lo necesite. 
