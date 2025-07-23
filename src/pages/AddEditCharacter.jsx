@@ -1,21 +1,31 @@
 
-import { useState } from "react"
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react"
+import { Link, useNavigate, useParams } from "react-router-dom";
+import useGlobalReducer from "../hooks/useGlobalReducer";
+import { crearContacto, editarContacto } from "../services/Api";
 
 
 export const AddEditCharacter = () => {
 
-    const [newContact, setNewContact] = useState({
-		FullName: "", 
+	const { store, dispatch } = useGlobalReducer() //busca en el store la informacion yendo por el estado global con dispatch para ejecuralo o mofificarlo. 
+
+	const { id } = useParams()  //extrae parametros actuales del navegador como el ID
+	// console.log(id);
+
+	const navigate = useNavigate()
+
+	const [isEditing, setIsEditing] = useState(false) //monto funcion de editar el contacto mostrando la tarjeta con sus datos y al hacer click en editar entra el useState que permite cambiar por que isediting is true, ejecutar. 
+	const [newContact, setNewContact] = useState({
+		FullName: "",
 		Email: "",
-		Phone: "", 
+		Phone: "",
 		Address: ""
 
 	})
 	const [showAlert, setShowAlert] = useState(false); //muestro alerta
 
-	const handleInputsChange = (e) => {  
-		setNewContact({...newContact, [e.target.name]: e.target.value})  //manejo el evento y actualizo el estado 
+	const handleInputsChange = (e) => {
+		setNewContact({ ...newContact, [e.target.name]: e.target.value })  //manejo el evento y actualizo el estado 
 	}																	//cambiar solo el campo del input que se esta modificando por un nuevo (name vs value)	
 
 	const handleSubmit = (e) => {
@@ -26,56 +36,80 @@ export const AddEditCharacter = () => {
 			setTimeout(() => setShowAlert(false), 2000);		//Temporizador de 2 sgs. para ejecutar alerta
 			return;
 		}
-		crearContacto(newContact, setNewContact, dispatch) //creo el contacto, limpio el formulario y actualizo el UseGlobalState
+		if (isEditing) {
+			editarContacto(id, newContact, dispatch, navigate)
+			
+		}else{
+			crearContacto(newContact, setNewContact, dispatch) //creo el contacto, limpio el formulario y actualizo el UseGlobalState
+
+		}
 
 	}
 
-    return (
-        <div className="container pt-4">
+	useEffect(() => {
+		if (id) {
+			setNewContact(store.contactos.filter(personaje => personaje.id == id)[0]);
+			setIsEditing(true)
+		} else {
+			setIsEditing(false)
+			setNewContact({
+				FullName: "",
+				Email: "",
+				Phone: "",
+				Address: ""
+			})
+		}
+	}, [id]);
+
+
+	return (
+		<div className="container pt-4">
 			{/* <h2 className="text-center text-light"><img style={{ height: "40px"}} src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=400&q=80" alt="Icono de contacto"></img></h2> */}
-			
+
 			{showAlert && (
 				<div className="alert alert-warning" role="alert">
-					Por favor completa todos los campos	
+					Por favor completa todos los campos
 				</div>
 			)}
-           <div className="row justify-content-center">
+			<div className="row justify-content-center">
 				<div className="col-md-11">
 					<h1 className="text-center my-4 fw-bold">Add a new contact</h1>
 					<form className="mb-5" onSubmit={handleSubmit}>
-					{/* Full Name */}
-					<div className="mb-3">
-						<label htmlFor="formGroupExampleInput" className="form-label">Full Name</label>
-						<input type="text" className="form-control" id="fullNameInput" placeholder="Full Name" name="FullName" value={newContact.FullName} onChange={handleInputsChange} />
-					</div>
-					{/* Email */}
-					<div className="mb-3">
-						<label htmlFor="formGroupExampleInput2" className="form-label">Email</label>
-						<input type="text" className="form-control" id="EmailInputformGroupExampleInput2" placeholder="Email" name="Email" value={newContact.Email} onChange={handleInputsChange} />
-					</div>
-					{/* Phone */}
-					<div className="mb-3">
-						<label htmlFor="formGroupExampleInput2" className="form-label">Phone</label>
-						<input type="text" className="form-control" id="PhoneInput" placeholder="Phone" name="Phone" value={newContact.Phone} onChange={handleInputsChange} />
-					</div>
-					{/* Address */}
-					<div className="mb-3">
-						<label htmlFor="formGroupExampleInput2" className="form-label">Address</label>
-						<input type="text" className="form-control" id="AddressInput" placeholder="Address" name="Address" value={newContact.Address} onChange={handleInputsChange} />
-					</div>
-					{/* Boton de Save y el link de devolver */}
-					<div>
-						<button className="btn btn-primary w-100">Save</button>
-					</div>
+						{/* Full Name */}
+						<div className="mb-3">
+							<label htmlFor="formGroupExampleInput" className="form-label">Full Name</label>
+							<input type="text" className="form-control" id="fullNameInput" placeholder="Full Name" name="FullName" value={newContact.FullName} onChange={handleInputsChange} />
+						</div>
+						{/* Email */}
+						<div className="mb-3">
+							<label htmlFor="formGroupExampleInput2" className="form-label">Email</label>
+							<input type="text" className="form-control" id="EmailInputformGroupExampleInput2" placeholder="Email" name="Email" value={newContact.Email} onChange={handleInputsChange} />
+						</div>
+						{/* Phone */}
+						<div className="mb-3">
+							<label htmlFor="formGroupExampleInput2" className="form-label">Phone</label>
+							<input type="text" className="form-control" id="PhoneInput" placeholder="Phone" name="Phone" value={newContact.Phone} onChange={handleInputsChange} />
+						</div>
+						{/* Address */}
+						<div className="mb-3">
+							<label htmlFor="formGroupExampleInput2" className="form-label">Address</label>
+							<input type="text" className="form-control" id="AddressInput" placeholder="Address" name="Address" value={newContact.Address} onChange={handleInputsChange} />
+						</div>
+						{/* Boton de Save y el link de devolver */}
+						<div>
+							<button className="btn btn-primary w-100" type="submit">{isEditing ? "Edit Contact" : "Add Contact"}
+								
+							</button>
+						</div>
 					</form>
 					<div className="mt-3">
 						<Link to="/demo">or get back to contacts</Link>
 					</div>
 				</div>
 			</div>
-        </div>
+		</div>
 
-    )
+	)
 }
 export default AddEditCharacter;
 // Hay que escribir un h2 (min: 7:05) que tendra 
@@ -94,10 +128,10 @@ export default AddEditCharacter;
 //Traer de home, el formulario
 // traer los elementos del fomulario a AddEditCharacter (para editar los contactos.)
 // usar elemento "params" con el hook useParams: me devolvera un objeto con parametros dinamicos de la url actual. (key (id) valor: 2)
-        // destructurar: reemplazar el valor de la variable (params) por el id. 
+// destructurar: reemplazar el valor de la variable (params) por el id.
 // llamar useEffect en addcharacter con sus dependencias. 
-    //si tiene el id edito si no lo estoy agregando. 
-    // steNew Personaje(store.personajes.filter(personaje => personaje.id == id)[0]) **el filter recorre y devuelve un nuevo arreglo. 
+//si tiene el id edito si no lo estoy agregando.
+// steNew Personaje(store.personajes.filter(personaje => personaje.id == id)[0]) **el filter recorre y devuelve un nuevo arreglo.
 // como acceder al store desde addeditcharacter: const {store, dispatch} = useGlobaReduce ()    
 
 //crear estado: isEditing, setIsEditingUseState
