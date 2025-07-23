@@ -28,11 +28,11 @@ export const Demo = () => {
             <div className="col-md-6 mb-4" key={index}>
               <div className="card border-0 shadow rounded" style={{ backgroundColor: p.background || "#ffffff" }}>
                 <div className="card-body">
-                  <h4 className="card-title text-left mb-3"><strong></strong> {p.FullName}</h4>
+                  <h4 className="card-title text-left mb-3"><strong></strong> {p.name}</h4>
                   <ul className="list-unstyled mb-4">
-                    <li><strong></strong> {p.Email}</li>
-                    <li><strong></strong> {p.Phone}</li>
-                    <li><strong></strong> {p.Address}</li>
+                    <li><strong></strong> {p.email}</li>
+                    <li><strong></strong> {p.phone}</li>
+                    <li><strong></strong> {p.address}</li>
                   </ul>
                   <div className="d-grid">
                     <Link to={`/edit/${p.id}`}>

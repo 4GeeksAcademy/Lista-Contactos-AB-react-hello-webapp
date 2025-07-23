@@ -1,20 +1,16 @@
-export const getContacts = async (dispatch, newContact, setNewContact) => {
+export const getContacts = async (dispatch) => {
   const response = await fetch("https://playground.4geeks.com/contact/agendas/anderson_agendas/contacts");
-  console.log(response);
 
   if (!response.ok) {
-    console.log("debo crear el contacto");
-    await crearContacto(newContact, setNewContact, dispatch);
+    console.log("Error al obtener contactos");
+    dispatch({ type: "set_Contactos", payload: [] });
     return;
   }
 
   const data = await response.json();
-  console.log(data);
-
-  
-  dispatch({ type: "set_Contactos", payload: data.contacts });
+  const contactos = Array.isArray(data.contacts) ? data.contacts : [];
+  dispatch({ type: "set_Contactos", payload: contactos });
 };
-
 
 export const crearContacto = async (newContact, setNewContact, dispatch) => {
   const response = await fetch("https://playground.4geeks.com/contact/agendas/anderson_agendas/contacts", {
@@ -23,10 +19,10 @@ export const crearContacto = async (newContact, setNewContact, dispatch) => {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      name: newContact.FullName,
-      email: newContact.Email,
-      phone: newContact.Phone,
-      address: newContact.Address
+      name: newContact.name,
+      email: newContact.email,
+      phone: newContact.phone,
+      address: newContact.address
     })
   });
 
@@ -34,22 +30,9 @@ export const crearContacto = async (newContact, setNewContact, dispatch) => {
     console.log("Error al crear contacto");
     return;
   }
-  const data = await response.json();
 
-  setNewContact({ FullName: "", Email: "", Phone: "", Address: "" });
-
-
-  dispatch({
-    type: "add_contact",
-    payload: {
-      id: data.id,
-      FullName: data.name,
-      Email: data.email,
-      Phone: data.phone,
-      Address: data.address,
-      background: "#ffffff"
-    }
-  });
+  await getContacts(dispatch);
+  setNewContact({ name: "", email: "", phone: "", address: "" });
 };
 
 export const editarContacto = async (id, newContact, dispatch, navigate) => {
@@ -58,10 +41,10 @@ export const editarContacto = async (id, newContact, dispatch, navigate) => {
     {
       method: "PUT",
       body: JSON.stringify({
-        name: newContact.FullName,
-        email: newContact.Email,
-        phone: newContact.Phone,
-        address: newContact.Address
+        name: newContact.name,
+        email: newContact.email,
+        phone: newContact.phone,
+        address: newContact.address
       }),
       headers: {
         "Content-Type": "application/json"

@@ -16,10 +16,11 @@ export const AddEditCharacter = () => {
 
 	const [isEditing, setIsEditing] = useState(false) //monto funcion de editar el contacto mostrando la tarjeta con sus datos y al hacer click en editar entra el useState que permite cambiar por que isediting is true, ejecutar. 
 	const [newContact, setNewContact] = useState({
-		FullName: "",
-		Email: "",
-		Phone: "",
-		Address: ""
+		id: "",
+		name: "",
+		email: "",
+		phone: "",
+		address: ""
 
 	})
 	const [showAlert, setShowAlert] = useState(false); //muestro alerta
@@ -31,7 +32,7 @@ export const AddEditCharacter = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();  //click(e) y preventdefault para no ejecutar la accion normal que es recargar o dirigir
 
-		if (!newContact.FullName || !newContact.Email || !newContact.Phone || !newContact.Address) { // Si alguno de estos campos (newContact.propiedad) esta vacio ! o faltan ||
+		if (!newContact.name || !newContact.email || !newContact.phone || !newContact.address) { // Si alguno de estos campos (newContact.propiedad) esta vacio ! o faltan ||
 			setShowAlert(true);																		//Alerta: "Por favor completa todos los campos"
 			setTimeout(() => setShowAlert(false), 2000);		//Temporizador de 2 sgs. para ejecutar alerta
 			return;
@@ -47,19 +48,23 @@ export const AddEditCharacter = () => {
 	}
 
 	useEffect(() => {
-		if (id) {
-			setNewContact(store.contactos.filter(personaje => personaje.id == id)[0]);
-			setIsEditing(true)
-		} else {
-			setIsEditing(false)
-			setNewContact({
-				FullName: "",
-				Email: "",
-				Phone: "",
-				Address: ""
-			})
-		}
-	}, [id]);
+  const contacto = store.todos.find(c => c.id === id);
+
+  if (id && contacto) {
+    setNewContact(contacto);
+    setIsEditing(true);
+  } else {
+    setNewContact({
+      id: "",
+      name: "",
+      email: "",
+      phone: "",
+      address: "",
+      background: "#ffffff"
+    });
+    setIsEditing(false);
+  }
+}, [id, store.todos]);
 
 
 	return (
@@ -78,22 +83,22 @@ export const AddEditCharacter = () => {
 						{/* Full Name */}
 						<div className="mb-3">
 							<label htmlFor="formGroupExampleInput" className="form-label">Full Name</label>
-							<input type="text" className="form-control" id="fullNameInput" placeholder="Full Name" name="FullName" value={newContact.FullName} onChange={handleInputsChange} />
+							<input type="text" className="form-control" id="nameInput" placeholder="Full Name" name="name" value={newContact.name} onChange={handleInputsChange} />
 						</div>
 						{/* Email */}
 						<div className="mb-3">
 							<label htmlFor="formGroupExampleInput2" className="form-label">Email</label>
-							<input type="text" className="form-control" id="EmailInputformGroupExampleInput2" placeholder="Email" name="Email" value={newContact.Email} onChange={handleInputsChange} />
+							<input type="text" className="form-control" id="EmailInputformGroupExampleInput2" placeholder="Email" name="email" value={newContact.email} onChange={handleInputsChange} />
 						</div>
 						{/* Phone */}
 						<div className="mb-3">
 							<label htmlFor="formGroupExampleInput2" className="form-label">Phone</label>
-							<input type="text" className="form-control" id="PhoneInput" placeholder="Phone" name="Phone" value={newContact.Phone} onChange={handleInputsChange} />
+							<input type="text" className="form-control" id="PhoneInput" placeholder="Phone" name="phone" value={newContact.phone} onChange={handleInputsChange} />
 						</div>
 						{/* Address */}
 						<div className="mb-3">
 							<label htmlFor="formGroupExampleInput2" className="form-label">Address</label>
-							<input type="text" className="form-control" id="AddressInput" placeholder="Address" name="Address" value={newContact.Address} onChange={handleInputsChange} />
+							<input type="text" className="form-control" id="AddressInput" placeholder="Address" name="address" value={newContact.address} onChange={handleInputsChange} />
 						</div>
 						{/* Boton de Save y el link de devolver */}
 						<div>
