@@ -9,7 +9,7 @@ export const Demo = () => {
   const { store, dispatch } = useGlobalReducer()
 
     useEffect(() => {
-      console.log("useEffect ejecutado");
+     // console.log("useEffect ejecutado");
     getContacts(dispatch); 
   }, []);
 
