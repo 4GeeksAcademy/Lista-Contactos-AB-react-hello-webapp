@@ -39,8 +39,8 @@ export const AddEditCharacter = () => {
 		}
 		if (isEditing) {
 			editarContacto(id, newContact, dispatch, navigate)
-			
-		}else{
+
+		} else {
 			crearContacto(newContact, setNewContact, dispatch) //creo el contacto, limpio el formulario y actualizo el UseGlobalState
 
 		}
@@ -48,23 +48,28 @@ export const AddEditCharacter = () => {
 	}
 
 	useEffect(() => {
-  const contacto = store.todos.find(c => c.id === id);
-
-  if (id && contacto) {
-    setNewContact(contacto);
-    setIsEditing(true);
-  } else {
-    setNewContact({
-      id: "",
-      name: "",
-      email: "",
-      phone: "",
-      address: "",
-      background: "#ffffff"
-    });
-    setIsEditing(false);
-  }
-}, [id, store.todos]);
+		const contacto = store.contactos.find(c => c.id === Number(id)) // usamos Number como metodo para convertir ID a valor y no string. 
+		// console.log("Contacto", contacto) 
+		// console.log(store.contactos);
+		// console.log("id esta editando", id); //resultado: cambiamos la propiedad todos por contacto ya que contenia el error. 
+		
+		
+		
+		if (id && contacto) {
+			setNewContact(contacto);
+			setIsEditing(true);
+		} else {
+			setNewContact({
+				id: "",
+				name: "",
+				email: "",
+				phone: "",
+				address: "",
+				background: "#ffffff"
+			});
+			setIsEditing(false);
+		}
+	}, [id, store.contactos]);
 
 
 	return (
@@ -103,7 +108,7 @@ export const AddEditCharacter = () => {
 						{/* Boton de Save y el link de devolver */}
 						<div>
 							<button className="btn btn-primary w-100" type="submit">{isEditing ? "Edit Contact" : "Add Contact"}
-								
+
 							</button>
 						</div>
 					</form>

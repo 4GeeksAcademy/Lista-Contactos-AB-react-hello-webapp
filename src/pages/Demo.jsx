@@ -1,16 +1,16 @@
 // Import necessary components from react-router-dom and other parts of the application.
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
-import { getContacts } from "../services/Api";
+import { getContacts, eliminarContacto } from "../services/Api";
 import useGlobalReducer from "../hooks/useGlobalReducer";  // Custom hook for accessing the global state.
 
 export const Demo = () => {
   // Access the global state and dispatch function using the useGlobalReducer hook.
   const { store, dispatch } = useGlobalReducer()
 
-    useEffect(() => {
-     // console.log("useEffect ejecutado");
-    getContacts(dispatch); 
+  useEffect(() => {
+    // console.log("useEffect ejecutado");
+    getContacts(dispatch);
   }, []);
 
 
@@ -36,8 +36,11 @@ export const Demo = () => {
                   </ul>
                   <div className="d-grid">
                     <Link to={`/edit/${p.id}`}>
-                      <button className="btn btn-outline-primary">Edit Character</button>
+                      <button className="btn btn-outline-primary">Edit Contact</button>
                     </Link>
+                    <button className="btn btn-outline-danger" onClick={() => eliminarContacto(p.id, dispatch)}>
+                      Delete Contact
+                    </button>
                   </div>
                 </div>
               </div>

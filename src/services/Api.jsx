@@ -57,3 +57,19 @@ export const editarContacto = async (id, newContact, dispatch, navigate) => {
     navigate("/demo");
   }
 };
+
+export const eliminarContacto = async (id, dispatch) => {
+  const response = await fetch (`https://playground.4geeks.com/contact/agendas/anderson_agendas/contacts/${id}`, {
+    method: "DELETE"
+  }
+);
+
+if (response.ok) {
+  console.log("contacto eliminado");
+  await getContacts (dispatch); // usamos await getContacts + dispatch para recargar la lista sni ese contacto
+  
+} else {
+  console.error("error al eliminar el contacto");
+  
+}
+}; 
