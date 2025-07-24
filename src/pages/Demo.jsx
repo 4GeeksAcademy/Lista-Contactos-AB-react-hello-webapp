@@ -38,9 +38,11 @@ export const Demo = () => {
                     <Link to={`/edit/${p.id}`}>
                       <button className="btn btn-outline-primary">Edit Contact</button>
                     </Link>
+                    <div lassName="d-grid">
                     <button className="btn btn-outline-danger" onClick={() => eliminarContacto(p.id, dispatch)}>
                       Delete Contact
                     </button>
+                    </div>
                   </div>
                 </div>
               </div>

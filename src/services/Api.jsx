@@ -26,6 +26,9 @@ export const crearContacto = async (newContact, setNewContact, dispatch) => {
     })
   });
 
+  console.log("esta es la respuesta", response);
+  
+
   if (!response.ok) {
     console.log("Error al crear contacto");
     return;
@@ -33,6 +36,8 @@ export const crearContacto = async (newContact, setNewContact, dispatch) => {
 
   await getContacts(dispatch);
   setNewContact({ name: "", email: "", phone: "", address: "" });
+  console.log("Nuevo contacto", newContact);
+  
 };
 
 export const editarContacto = async (id, newContact, dispatch, navigate) => {

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import { crearContacto, editarContacto } from "../services/Api";
+import  fondo  from "../assets/img/descarga.jpg";
 
 
 export const AddEditCharacter = () => {
@@ -47,16 +48,22 @@ export const AddEditCharacter = () => {
 
 	}
 
+
+
 	useEffect(() => {
 		const contacto = store.contactos.find(c => c.id === Number(id)) // usamos Number como metodo para convertir ID a valor y no string. 
 		// console.log("Contacto", contacto) 
 		// console.log(store.contactos);
 		// console.log("id esta editando", id); //resultado: cambiamos la propiedad todos por contacto ya que contenia el error. 
-		
-		
-		
+
+
+
 		if (id && contacto) {
+			console.log("new contact", newContact);  // estado inicial
+
 			setNewContact(contacto);
+			console.log("estado actualizado", newContact);
+
 			setIsEditing(true);
 		} else {
 			setNewContact({
@@ -72,7 +79,19 @@ export const AddEditCharacter = () => {
 	}, [id, store.contactos]);
 
 
-	return (
+	
+		return (
+			<div style={{
+				backgroundImage: `url(${fondo})`,
+				backgroundSize: "cover",
+				backgroundRepeat: "no-repeat",
+				backgroundPosition: "center",
+				height: "100vh",
+			}}
+			>
+				
+		
+	
 		<div className="container pt-4">
 			{/* <h2 className="text-center text-light"><img style={{ height: "40px"}} src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=400&q=80" alt="Icono de contacto"></img></h2> */}
 
@@ -83,25 +102,25 @@ export const AddEditCharacter = () => {
 			)}
 			<div className="row justify-content-center">
 				<div className="col-md-11">
-					<h1 className="text-center my-4 fw-bold">Add a new contact</h1>
+					<h1 className="text-center my-4 fw-bold text-white ">Add a new contact</h1>
 					<form className="mb-5" onSubmit={handleSubmit}>
 						{/* Full Name */}
-						<div className="mb-3">
-							<label htmlFor="formGroupExampleInput" className="form-label">Full Name</label>
+						<div className="mb-3 text-white">
+							<label htmlFor="formGroupExampleInput" className="form-label" tex>Full Name</label>
 							<input type="text" className="form-control" id="nameInput" placeholder="Full Name" name="name" value={newContact.name} onChange={handleInputsChange} />
 						</div>
 						{/* Email */}
-						<div className="mb-3">
+						<div className="mb-3 text-white">
 							<label htmlFor="formGroupExampleInput2" className="form-label">Email</label>
 							<input type="text" className="form-control" id="EmailInputformGroupExampleInput2" placeholder="Email" name="email" value={newContact.email} onChange={handleInputsChange} />
 						</div>
 						{/* Phone */}
-						<div className="mb-3">
+						<div className="mb-3 text-white">
 							<label htmlFor="formGroupExampleInput2" className="form-label">Phone</label>
 							<input type="text" className="form-control" id="PhoneInput" placeholder="Phone" name="phone" value={newContact.phone} onChange={handleInputsChange} />
 						</div>
 						{/* Address */}
-						<div className="mb-3">
+						<div className="mb-3 text-white">
 							<label htmlFor="formGroupExampleInput2" className="form-label">Address</label>
 							<input type="text" className="form-control" id="AddressInput" placeholder="Address" name="address" value={newContact.address} onChange={handleInputsChange} />
 						</div>
@@ -118,11 +137,11 @@ export const AddEditCharacter = () => {
 				</div>
 			</div>
 		</div>
-
+			</div>
 	)
 }
 export default AddEditCharacter;
-// Hay que escribir un h2 (min: 7:05) que tendra 
+{/* // Hay que escribir un h2 (min: 7:05) que tendra 
 //A cada input se le debe agregar el value y el onchange
 
 
@@ -145,4 +164,4 @@ export default AddEditCharacter;
 // como acceder al store desde addeditcharacter: const {store, dispatch} = useGlobaReduce ()    
 
 //crear estado: isEditing, setIsEditingUseState
-// debo tener una funcion const navigate = useNavigate que mne servira para cuando haga click me diriga a una pagina que yo lo necesite. 
+// debo tener una funcion const navigate = useNavigate que mne servira para cuando haga click me diriga a una pagina que yo lo necesite.  */}
